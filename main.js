@@ -22,30 +22,37 @@ const resumes = [
           "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda necessitatibus non eum harum quibusdam! Dignissimos perferendis neque sed blanditiis cupiditate pariatur voluptatem consequuntur labore mollitia, illum explicabo distinctio delectus id?",
           "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quis ad vel, officia ut, temporibus deleniti dicta, corrupti nostrum at id nobis obcaecati reprehenderit quae?",
         ],
-        skills: ["HTML", "CSS", "JavaScript", "ReactJS", "Express", "MongoDB"],
+      },
+      {
+        company: "Per Scholas",
+        title: "Student",
+        // startDate: Date("January 2023"),
+        // endDate: Date("April 2023"),
+        startDate: "Jan. 2023",
+        endDate: "Apr. 2023",
+        location: "New York",
+        duties: [
+          "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla repudiandae in id officia eius dolore, quod labore sapiente, odit inventore itaque asperiores.",
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda necessitatibus non eum harum quibusdam! Dignissimos perferendis neque sed blanditiis cupiditate pariatur voluptatem consequuntur labore mollitia, illum explicabo distinctio delectus id?",
+          "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem quis ad vel, officia ut, temporibus deleniti dicta, corrupti nostrum at id nobis obcaecati reprehenderit quae?",
+        ],
       },
     ],
+    skills: ["HTML", "CSS", "JavaScript", "ReactJS", "Express", "MongoDB"],
   },
 ];
 
-// https://stackoverflow.com/questions/22191576/javascript-createelement-and-setattribute
-const el = (sel, par) => (par || document).querySelector(sel);
-const els = (sel, par) => (par || document).querySelectorAll(sel);
-const elNew = (tag, prop) => Object.assign(document.createElement(tag), prop);
-const attr = (el, attr) =>
-  Object.entries(attr).forEach(([k, v]) => el.setAttribute(k, v));
-const css = (el, styles) => Object.assign(el.style, styles);
-
-const renderResumé = () => {
+const renderRésumé = () => {
   // Get container
   let container = document.getElementById("container");
   // Create header
-  let header = elNew("h1", {
+  let header = Object.assign(document.createElement("h1"), {
     innerHTML: resumes[0].name,
   });
   // Append header to container
   container.append(header);
-  let contacts = elNew("div", {
+  // Create contacts div
+  let contacts = Object.assign(document.createElement("div"), {
     className: "contacts",
   });
   // Create email div
@@ -147,28 +154,65 @@ const renderResumé = () => {
     work.append(heading);
     // Append work to experience
     experiences.append(work);
-  });
 
+    // Create duties div
+    let duties = Object.assign(
+      document.createElement("div", { className: "duties" })
+    );
+    // Create title-and-location div
+    let titleAndLocation = Object.assign(document.createElement("div"), {
+      className: "title-and-location",
+    });
+    // Create title and location
+    let title = Object.assign(document.createElement("i"), {
+      innerHTML: el.title,
+    });
+    let location = Object.assign(document.createElement("i"), {
+      innerHTML: el.location,
+    });
+    // Append title and location to title-and-location div
+    titleAndLocation.append(title);
+    titleAndLocation.append(location);
+    // Append title-and-location to duties
+    duties.append(titleAndLocation);
+    // Append duties to work
+    work.append(duties);
+    // Create ul to hold duties
+    let dutiesList = Object.assign(document.createElement("ul"));
+    // Map over duties and append them to ul
+    el.duties.map((el) => {
+      // Create duties
+      let duty = Object.assign(document.createElement("li"), { innerHTML: el });
+      // Append to ul
+      dutiesList.append(duty);
+    });
+    // Append ul to duties
+    duties.append(dutiesList);
+  });
   // Append experiences div to container
   container.append(experiences);
+
+  // Create skills div
+  let skills = Object.assign(document.createElement("div"), {
+    className: "skills",
+  });
+  // Create skills header
+  let skillsHeader = Object.assign(document.createElement("h2"), {
+    innerHTML: "Skills",
+  });
+  // Create skills ul
+  let skillsList = Object.assign(document.createElement("ul"));
+  // Map over skills array and append to skillsList
+  resumes[0].skills.map((el) => {
+    let skill = Object.assign(document.createElement("li"), { innerHTML: el });
+    skillsList.append(skill);
+  });
+
+  // Append skills header and list to skills div
+  skills.append(skillsHeader);
+  skills.append(skillsList);
+  // Append skills to contianer
+  container.append(skills);
 };
 
-// const createH1 = (str) => {
-//   let h1 = document.createElement("h1");
-//   let text = document.createTextNode(str);
-//   h1.append(text);
-//   return h1;
-// };
-
-// const renderResume = () => {
-//   let container = document.getElementById("container");
-//   // Name
-//   container.append(createH1(resumes[0].name));
-//   // email - number - location
-//   let contacts = document.createElement("div");
-//   contacts.setAttribute("class", "contacts");
-//   // contacts.append()
-//   container.append(contacts);
-// };
-
-renderResumé();
+renderRésumé();
